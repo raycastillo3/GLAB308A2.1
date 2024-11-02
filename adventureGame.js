@@ -106,18 +106,47 @@ class Adventurer extends Character {
         const coins = this.inventory[1];
         console.log(`${this.name} has: ${coins}`)
     }
-    duel (adventurer){
-        adventurer = this.name; 
-        console.log(adventurer);
-        super.roll()
+ 
+    duel(adventurer) {
+        console.log(`Duel starts between ${this.name} and ${adventurer.name}!`);
+
+        while (this.health > 50 && adventurer.health > 50) {
+            const roll1 = this.roll();
+            const roll2 = adventurer.roll();
+
+            if (roll1 > roll2) {
+                adventurer.health -= 1;
+                console.log(`${this.name} wins the round! ${adventurer.name} loses 1 health. Current health: ${this.name} ${this.health}, ${adventurer.name} ${adventurer.health}`);
+            } else if (roll2 > roll1) {
+                this.health -= 1;
+                console.log(`${adventurer.name} wins the round! ${this.name} loses 1 health. Current health: ${this.name} ${this.health}, ${adventurer.name} ${adventurer.health}`);
+            } else {
+                console.log(`It's a tie! Both adventurers remain the same health: ${this.health}`);
+            }
+        }
+
+        if (this.health <= 50) {
+            console.log(`${this.name} has been defeated!`);
+            console.log(`${adventurer.name} wins the duel!`);
+        } else {
+            console.log(`${adventurer.name} has been defeated!`);
+            console.log(`${this.name} wins the duel!`);
+        }
+    }
+
+    roll(mod = 0) {
+        const result = Math.floor(Math.random() * 20) + 1 + mod;
+        console.log(`${this.name} rolled a ${result}.`);
+        return result; // Return the roll result for comparison
     }
   }
 
-  const adventurer1 = new Adventurer("Robin", "Carpenter", "woodChooper", "Great with the axe");
+//   const adventurer1 = new Adventurer("Robin", "Carpenter", "woodChooper", "Great with the axe");
 //   adventurer1.inventory.push("small hat", "sunglasses");
 //   console.log(adventurer1.inventory);
 //   console.log(adventurer1.checkCoins());
-console.log(adventurer1.duel());
+// console.log(adventurer1.duel("john"));
+
 
 
 //create a Companion class with properties and methods to the companions
@@ -129,8 +158,14 @@ class Companion {
 }
 
 const companion2 = new Companion("Leo", "cat");
-const adventurer2 = new Adventurer("Robin", "Carpenter", "Speed", "Great with the axe", companion2);
-adventurer2.inventory.push("axe", "boots", "water bottle");
+const adventurer1 = new Adventurer("Robin", "Carpenter", "woodChopper", "Great with the axe", companion2);
+const adventurer2 = new Adventurer("John", "Fighter", "Strength", "A strong warrior", new Companion("Max", "Dog"));
+
+adventurer1.duel(adventurer2);
+
+// const companion2 = new Companion("Leo", "cat");
+// const adventurer2 = new Adventurer("Robin", "Carpenter", "Speed", "Great with the axe", companion2);
+// adventurer2.inventory.push("axe", "boots", "water bottle");
 // console.log(adventurer2);
 // console.log(adventurer2.scout());
 // console.log(adventurer2.chooseItem());
@@ -163,3 +198,6 @@ class AdventurerFactory {
   const healers = new AdventurerFactory("Healer");
   const robin = healers.generate("Robin");
 
+
+
+  
